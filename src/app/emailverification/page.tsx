@@ -24,7 +24,7 @@ useEffect(() => {
         }
     };
 
-    const intervalId = setInterval(checkEmailVerification, 4000);
+    const intervalId = setInterval(checkEmailVerification, 2000);
 
     return () => clearInterval(intervalId);
 }, [auth, router]);
