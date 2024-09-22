@@ -1,13 +1,34 @@
 "use client";
 
-// import { useEffect } from "react";
+import { auth } from "@/firebase/firebaseauth";
+import { app } from "@/firebase/firebaseconfig";
+import { getAuth } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-
-// import { AuthContextData } from "@/context/auth.context";
 
 export default function EmailVerification() {
-    // const { user } = AuthContextData()!;
- 
+
+const router = useRouter();
+const auth = getAuth(app);
+
+useEffect(() => {
+    const checkEmailVerification = () => {
+        const user = auth.currentUser;
+        if (user) {
+            user.reload().then(() => {
+                if (user.emailVerified) {
+                    router.push("/"); 
+                }
+            });
+        }
+    };
+
+    const intervalId = setInterval(checkEmailVerification, 4000);
+
+    return () => clearInterval(intervalId);
+}, [auth, router]);
+
 
     return (
         <>
