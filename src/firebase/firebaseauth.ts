@@ -1,22 +1,8 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification, Auth, User, sendPasswordResetEmail } from "firebase/auth";
 import { app } from '@/firebase/firebaseconfig';
-import { saveUser } from "./firebasefirestore";
 
 
 export const auth = getAuth(app);
-
-
-
-async function handleUserRegistration(userCredential: any) {
-    const user = {
-        uid: userCredential.user.uid,
-        email: userCredential.user.email,
-        displayName: userCredential.user.displayName,
-    };
-
-    await saveUser(user);
-}
-
 
 export function SignupForm(email: string, password: string) {
     createUserWithEmailAndPassword(auth, email, password)
@@ -26,8 +12,6 @@ export function SignupForm(email: string, password: string) {
             const user = userCredential.user;
             sendEmailVerification(auth.currentUser as User);
             console.log(user, 'user created successfully.');
-            
-            handleUserRegistration(userCredential);
 
         })
         .catch((error) => {
